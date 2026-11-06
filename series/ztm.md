@@ -13,13 +13,13 @@ Personaj: Stick (hanorac negru). Format: ~50 s, 9:16, voce off în engleză, vot
 | 6 | Copilul concediat (salariul de $50 deja plătit). Stick corectează fluturașii cu markerul: $2 -> $20. 11 clienți x $20 = $220. Sold: 337 + 220 = $557. Final: copilul deschide un stand rival peste stradă, $10. Vot: A) potrivește $10 (40 clienți, $400) B) îl angajează înapoi cu $100 (25 clienți la $20 = $500, minus $100 = $400; același profit) | B (angajează copilul înapoi cu $100) | $557 |
 | 7 | Stick îl angajează înapoi pe copil cu $100 și îl face partener; 25 clienți x $20 = $500. Sold: 557 + 500 - 100 = $957. Final: un om în costum vrea 500 fluturași la $3 = $1.500, dar imprimanta costă $600. Vot: A) cumpără imprimanta, ia comanda (sold $1.857) B) renunță, păstrează standul ($400/zi, sold $1.357) | A (5–0: cumpără imprimanta) | $957 |
 | 8 | Cumpără imprimanta: 957 - 600 = $357. Noaptea imprimă 500 fluturași (500/noapte), la 480 se blochează, o repară cu o agrafă. La 8 AM omul plătește $1.500: sold 357 + 1.500 = $1.857. Apoi omul cere 5.000 fluturași până vineri ($3 = $15.000). Final: imprimanta începe să fumeze. Vot: A) ia toate 5.000, cumpără 2 imprimante ($1.200, sold $657, apoi +$15.000) B) ia doar 2.000 cu o imprimantă ($6.000, sold rămâne $1.857, apoi +$6.000) | A (4–0) | $1.857 |
-| 9 | Votul A: 2 imprimante noi ($1.200, sold $657). 3 imprimante = 1.500 flyere/noapte; după 3 nopți 4.500, apoi se termină cerneala: $400 cerneală, +500 flyere, sold $257. Vineri omul în costum ia 5.000 și plătește $15.000: sold $15.257. Apoi vrea 50.000 flyere pentru $150.000. Vot: A) presă industrială ($9.000, sold $6.257) B) închiriază un atelier de printare ($5.000, sold $10.257) | (în așteptare) | $15.257 |
+| 9 | Votul A: flyerele aduc $15.000 (sold $15.257; presele/cerneala: detalii scoase din canon). Stick se plictisește de flyere și licitează $2.000 pentru un depozit abandonat (sold $13.257). Înăuntru: o mașină veche și un seif încuiat. Vinde mașina la licitație cu $8.000: sold $21.257. Seiful începe să bipăie. Vot: A) deschide seiful (sold rămâne $21.257) B) îl vinde nedeschis cu $3.000 (sold $24.257) | (în așteptare) | $21.257 |
 
 ## Personaje
 Stick; Sal (negustor, vinde lucruri la $45); copilul cu fluturași (șapcă roșie; concediat în Ep. 6, rival cu stand la $10, angajat înapoi în Ep. 7); omul în costum (client cu comenzi mari, Ep. 7–9).
 
 ## Promisiuni deschise
-Ep. 9 -> 10: comanda de 50.000 flyere ($150.000) într-o săptămână; 3 imprimante = 1.500/noapte (10.500 în 7 nopți), deci trebuie extindere (presă sau atelier). Obiectiv: $1.000.000.
+Ep. 9 -> 10: seiful bipăie; A) îl deschide, B) îl vinde cu $3.000. Direcția seriei: nu mai doar flyere; aventuri cu obiecte mari (licitații, depozite). Obiectiv: $1.000.000.
 
 ## Reguli de continuitate
 Calculează mereu soldul explicit; costurile se scad din sold. Prețul de bază este $20/client, cu excepția fluturașilor greșiți. Fluturașii pentru omul în costum: $3 bucata. Barele de vot din video: fără numere, doar bara mai lungă pentru câștigător (dacă se folosesc).
