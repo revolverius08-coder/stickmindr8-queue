@@ -1,0 +1,21 @@
+{
+ "series": "AI tools",
+ "slug": "clip5_two_repos_ai_slop",
+ "title": "Two Repos That Fix AI Slop Videos",
+ "caption": "Most AI videos look like slop. Two open source repos try to fix that. 🎨🎬\n\n1) Vox Director: give it a topic and it builds a paper collage explainer video (needs an API key).\n2) Huashu Art Motion: builds a short film from an art direction, with 35 art style recipes, drawn in code.\n\nBoth are MIT licensed and work as Claude Code skills. Not affiliated with either project. Always check each repo's README before using it.\n\nPaper collage, or moving painting? Comment STYLE and tag a friend who makes videos. Follow @StickMindR8!\n\n#claudecode #aitools #github #opensource #reelsinstagram",
+ "first_comment": "Paper collage or moving painting? Comment STYLE 👇 Check each repo's README and license first.",
+ "status": "ready",
+ "other_platforms": {
+  "youtube_shorts": {
+   "title": "2 GitHub Repos That Fix AI Slop Videos",
+   "description": "Vox Director (paper collage explainers, needs an API key) and Huashu Art Motion (35 art style recipes, drawn in code). Both MIT licensed, both work as Claude Code skills. Not affiliated with either project.\n\n#claudecode #shorts #github #opensource #aitools",
+   "tags": "claude code, vox director, huashu art motion, github, open source, ai video, ai tools"
+  },
+  "tiktok": {
+   "title": "2 repos that fix AI slop videos",
+   "description": "Vox Director and Huashu Art Motion, both MIT licensed Claude Code skills. Paper collage or moving painting?",
+   "hashtags": "#claudecode #aitools #github #opensource #fyp"
+  }
+ },
+ "publish_at": "2026-11-18T02:00:00+02:00"
+}
