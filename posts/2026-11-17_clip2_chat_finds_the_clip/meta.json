@@ -1,0 +1,21 @@
+{
+ "series": "GTA 6 clipping",
+ "slug": "clip2_chat_finds_the_clip",
+ "title": "Chat Finds The Clip For You",
+ "caption": "Chat always reacts after the moment, so this tool rewinds 20 seconds. 🎮💬\n\nTwitchDownloader grabs a stream's whole chat, a script counts the messages every 10 seconds, finds the spike, rewinds, and cuts the clip in vertical. One command, ready for OpenShorts. Claude Code helped build it. Only clip streamers who allow it, and credit them. Not affiliated with any of these tools.\n\nComment CHAT and tag a friend who clips. Follow @StickMindR8!\n\n#gta6 #gaming #aitools #twitch #reelsinstagram",
+ "first_comment": "Want the idea? Comment CHAT 👇 Only clip streamers who allow it, and always credit them.",
+ "status": "ready",
+ "other_platforms": {
+  "youtube_shorts": {
+   "title": "Chat Finds The GTA 6 Clip For You",
+   "description": "Chat reacts after the moment, so the tool rewinds 20 seconds and cuts a vertical clip. TwitchDownloader, a chat counter script, OpenShorts. Only clip streamers who allow it, and credit them. Not affiliated with any of these tools.\n\n#gta6 #shorts #twitch #aitools #gaming",
+   "tags": "gta 6, gta6, twitch clips, chat spike, twitchdownloader, openshorts, claude code, stream clipping, ai tools"
+  },
+  "tiktok": {
+   "title": "Chat finds the GTA 6 clip for you",
+   "description": "Chat reacts after the moment, so rewind 20 seconds and cut. Only clip streamers who allow it and credit them.",
+   "hashtags": "#gta6 #gaming #twitch #aitools #fyp"
+  }
+ },
+ "publish_at": "2026-11-17T06:00:00+02:00"
+}
