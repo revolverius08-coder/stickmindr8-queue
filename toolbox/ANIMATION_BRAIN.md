@@ -1,7 +1,7 @@
 # ANIMATION_BRAIN: creierul de animații StickMindR8
 
 **Regula #1 (de la utilizator):** când zice „facem un videoclip", citesc ÎNTÂI acest fișier (`toolbox/ANIMATION_BRAIN.md` din repo `revolverius08-coder/stickmindr8-queue`, branch main) și iau de aici tot ce trebuie: sunet, animații, tranziții, subtitrări, QC, livrare. Răspund MEREU în română; textul din video/metadate e în engleză.
-Actualizat: 2026-11-17. Ce e deja făcut vs. ce e propunere e marcat. Nimic NOU în clipuri fără aprobarea lui.
+Actualizat: 2026-11-17 (v2: infrastructura din §13 e instalată și testată). Ce e deja făcut vs. ce e propunere e marcat. Elementele vizuale NOI într-un clip se listează înainte și se aprobă; infrastructura (QC, aliniere, sunet) rulează mereu.
 
 ---
 
@@ -9,12 +9,12 @@ Actualizat: 2026-11-17. Ce e deja făcut vs. ce e propunere e marcat. Nimic NOU 
 1. **Citesc acest MD** + `toolbox/TOOLBOX.md` (uneltele noi) + memoria (preferințe).
 2. Scriu/primesc scriptul. Aplic `spoken_money()` pe replici (bani: număr întâi, apoi moneda). Cuvinte fără promisiuni de tip „trimit/dau ceva". Numele reale de unelte rămân, cu „not affiliated" în caption.
 3. Listez elementele propuse (obiecte care apar, sunete, efecte) și aștept da/nu dacă e ceva nou față de standard.
-4. Voce: `vo.py` (Kokoro EN, sid 6) → `voice.mp3` + `info.json` (cue-uri + timpi de cuvinte).
-5. Proiect nou în studio (copiat din clipul precedent): `config.json`, `scenes/{h.js,outro.js,times.js}`, `scenes/shots/g.js`, `story/build_shots.py` → generează `times.js`, `timeline/words.json`, `story/shots.json`, config (hide/keywords).
+4. Voce: `vo.py` (Kokoro EN, sid 6) → `voice.mp3` + `info.json`. **`vo.py` rulează automat `tools/align_words.py` (faster-whisper): timpii de cuvinte sunt REALI** (media estimării greșea ~0.17 s, max ~0.5 s).
+5. Proiect nou: `bash toolbox/studio-kit/new_clip.sh N` (creează `clipN` + `clipN-th` din șabloane). Conține: `config.json`, `scenes/{h.js,outro.js,times.js}`, `scenes/shots/g.js`, `story/build_shots.py` → generează `times.js`, `timeline/words.json`, `story/shots.json`, config (hide/keywords).
 6. Desenez shoturile; randez 10–15 cadre-cheie (`--stills`, `--sheet`) și mă uit la ele. Repar ciocnirile de text.
 7. Randare completă în fundal: `wd.sh <proiect> <durata>` (segmente de 5 s, restart la blocaj). Max ~20 min.
 8. Miniatură: proiect `clipN-th`, un singur shot `th`, `--stills 0.5 --scale 1` → `cover.jpg`.
-9. **QC** (secțiunea 10) pe cadre + sunet; repar FAIL-urile; nu trimit până nu e curat.
+9. **QC obligatoriu:** `python3 toolbox/studio-kit/tools/qc_video.py ...` (§10) + mă uit la `qc_sheet.jpg`; repar FAIL-urile; nu trimit până nu e 0 FAIL.
 10. Livrare (secțiunea 11): mp4 + cover în chat (SendUserFile), metadate (un bloc/platformă), Slack DM + push (o dată), GitHub + trigger Instagram doar dacă e în fluxul curent al lui (acum DA pentru clipurile reelmimic).
 
 ---
@@ -25,7 +25,7 @@ Actualizat: 2026-11-17. Ce e deja făcut vs. ce e propunere e marcat. Nimic NOU 
 Rădăcină: `/home/claude/work/aitrends-2d-studio/`. Reinstalare: copiez `kit/` din plugin (`/root/.claude/plugins/synced/*/aitrends-2d-studio/skills/make-2d-video/kit`) ca `aitrends-2d-studio/`, apoi `npm install` + `python tools/doctor.py` (detalii în `references/install.md` din plugin).
 - **Motor:** canvas 2D în Chromium headless (Playwright preinstalat), cadru cu cadru → ffmpeg. 9:16 = 1080×1920, 24 fps. Fără modele generative de imagini: Stick e identic în fiecare cadru.
 - `engine/`: `core.js` (E, V, ease, key, prog, shake, text, glow, circle, ring, rr, seg, veil, layer, blurLayer, wordTime, registerShot), `rig2d.js` (drawFigure, POSES, posesAt, breathe, walkPose, face, bigFace, headPos), `fx2d.js` (rain, drops, dust, snow, stars, fog, sun, moon, godRays, lightCone, pool, lensStreak, sparkle, lightning, speedLines, rings, skyline…), `ui2d.js` (titleCard, bigLine, badge, readout, callout, dimension, dataCard, compareBars, meter, blueprint, bubble, endScreen, captions), `three-kit.js` (3D: stage, orbit, dolly, builders), `styles.js` (grade: dusk, midnight, golden, neon, storybook), `player.js`.
-- `tools/`: `new_project.py`, `transcribe.py` (Whisper), `parse_script.py`, `beats.py`, `doctor.py`, `verify_kit.py`. **`qc_video.py` lipsește din container** (vezi secțiunea 10: îl recreez după specificații).
+- `tools/`: `new_project.py`, `transcribe.py` (Whisper), `parse_script.py`, `beats.py`, `doctor.py`, `verify_kit.py`. `qc_video.py` recreat: `toolbox/studio-kit/tools/qc_video.py` (copiază-l în `tools/` din studio dacă vrei, dar îl rulez direct din repo).
 - `audio/`: `sfx.py` (35 SFX sintetizate), `music.py` (11 stări), `mix.py` (duck + −14 LUFS), `dsp.py`.
 - `render.mjs`: `--project --from --to --stills t1,t2 --sheet --scale --workers --format jpeg --preset --out`.
 - Poziții Stick (POSES): stand, relaxed, talk, explain, point, pointUp, wave, cheer, handsOnHead, crossArms, think, shrug, holdFront, phone, reach, sad, facepalm, ready, crouch, sit, sitBack, kneel, lie, dive, kick, jump, fall. Expresii: neutral, smile, happy, joy, surprised, shocked, scared, worried, nervous, angry, determined, sad, cry, smirk, sleepy, thinking, confused, awe.
@@ -65,7 +65,7 @@ Salvat aici ca să nu se piardă la reset:
 
 ### 1.5 Voce, transcriere, audio
 - **TTS:** Kokoro-82M `kokoro-en-v0_19`, voce sid 6, prin `sherpa-onnx-offline-tts` (în `/home/claude/tts/`). La container nou: re-descarc binarul sherpa-onnx și modelul `kokoro-en-v0_19` din releases `k2-fsa/sherpa-onnx` (GitHub). Gratuit, fără cont.
-- **Whisper:** `tools/transcribe.py` folosește `faster-whisper` (acum NEINSTALAT: `pip install --break-system-packages faster-whisper`). Util pentru: aliniere exactă a cuvintelor, transcrierea referințelor, verificare voce.
+- **Whisper:** `faster-whisper` instalat (`pip install --break-system-packages faster-whisper`; modelul `base.en` se descarcă automat din Hugging Face; PyAV dă eroare la deschiderea fișierelor, deci decodăm audio cu ffmpeg în numpy). Folosit în `align_words.py`, `tools/transcribe.py`, transcrierea referințelor.
 - **Tesseract** instalat (OCR pentru QC). **ffmpeg 6.1**, **Node 22**, **Python 3.13**, numpy/scipy/opencv.
 - **Muzică:** generată local (11 stări: mystery, tension, action, wonder, hopeful, sad, triumph, playful, calm, dark, epic). Folosim mai ales `playful` (intensitate 0.45–0.75). Mixaj: voce curată, muzică −9 dB sub voce, ambianță −5, master −14 LUFS.
 - **SFX proprii (35):** whoosh, swish, impact, hit, riser, slowmo, freeze, tick, clock, heartbeat, pop, blip, counter, ding, shimmer, stinger, footstep, kick, whistle, carpass, phonebuzz, phonering, cheer, applause, murmur, rain, thunder, wind, roomtone, city, hum, powerup, glitch, flash, buzz, keys, kaching, scratch. Opțiuni per cue: `at, name, gain, pitch, dur, seed`; `name` poate fi cale la WAV/MP3 propriu.
@@ -137,7 +137,7 @@ Proiect `clipN-th`: `config.json` cu `captions:false`, `duration:1`, un shot `th
 | click FOLLOW | blip+ding+shimmer | `*/press` + `*/toggle-on` | roșu → verde |
 | somn/lună | roomtone, hum | `dreamy/sleep`, `*/wake` | |
 | dramatic | riser, impact, stinger | `cinematic/*` | riser 1–2 s înainte de reveal |
-Pachetele uisfx: arcade, rubber, glass, mechanical, minimal, soft, organic, dreamy, scifi, cinematic, studio, zen. Regula: UN pachet per clip, schimbat între clipuri. Se folosesc în `shots.json` cu `"name": "/cale/spre/fișier.mp3"`. **Notă:** compatibilitatea căii cu `mix.py` trebuie verificată la prima folosire (propunere, neaprobată încă).
+Pachetele uisfx: arcade, rubber, glass, mechanical, minimal, soft, organic, dreamy, scifi, cinematic, studio, zen. Regula: UN pachet per clip, schimbat între clipuri. Se folosesc în `shots.json` cu `"name": "/cale/spre/fișier.mp3"`. **Verificat:** `mix.py` încarcă direct mp3-urile uisfx (stereo, vârf ~0.28, deci gain −4…−8 față de SFX-urile proprii). Folosire în `build_shots.py`: `from sfx_map import pick; P=pick('rubber'); s(t, P('pop'), -6)` (`tools/sfx_map.py`). `pitch` NU se aplică fișierelor (doar SFX-urilor sintetice). SFX din cod: `node tools/jsfxr_make.js <outdir> pickupCoin hitHurt …` apoi folosești WAV-urile ca `name`.
 
 ---
 
@@ -154,13 +154,14 @@ Pachetele uisfx: arcade, rubber, glass, mechanical, minimal, soft, organic, drea
 
 ---
 
-## 6. Upgrade-uri propuse (aprobare necesară)
-1. Aliniere reală a cuvintelor (faster-whisper sau Parakeet/sherpa) în loc de timpi estimați → pop-uri mai exacte.
-2. `qc_video.py` recreat și rulat obligatoriu (secțiunea 10).
-3. uisfx + jsfxr în `mix.py` (cale de fișier în `name`).
-4. Analizor de referință (`analyze_reference.py`) la fiecare ReelMimic.
-5. Biblioteca de poze/props/IK extinsă.
-6. Eșantion de 20 s la clipurile noi ca stil.
+## 6. Upgrade-uri (stare)
+1. Aliniere reală a cuvintelor: **FĂCUT** (`align_words.py`, automat în `vo.py`).
+2. `qc_video.py`: **FĂCUT** (§10).
+3. uisfx + jsfxr în mixer: **FĂCUT** (`sfx_map.py`, `jsfxr_make.js`).
+4. Analizor de referință: **FĂCUT** (`tools/analyze_reference.py`, din claude-stickman-shorts, MIT). Rulat la fiecare ReelMimic: `python3 tools/analyze_reference.py <video> <outdir>`.
+5. `new_clip.sh N`: **FĂCUT** (scaffold de proiect).
+6. Biblioteca de poze/props/IK extinsă din stickman-kino/stix: **IDEE**, de propus pe clip.
+7. Eșantion de 20 s la clipurile noi ca stil: **IDEE**.
 
 ---
 
@@ -191,7 +192,10 @@ Alte serii: `/santa`, `/ztm`, `/tn`, `/wi` au propriile reguli (el postează man
 ## 10. QC (obligatoriu înainte de trimitere)
 Rulat pe videoul NOU, nu pe episoade vechi.
 **Vizual:** 10–15 cadre-cheie la momentele cele mai încărcate; apoi contact sheet pe fișierul final (`ffmpeg -vf fps=1/3,scale=270:-1,tile=6x5`).
-**Script `qc_video.py` (de recreat, lipsește din container):** `python3 tools/qc_video.py --video out/X.mp4 --meta meta.json --cover cover.jpg --words projects/<p>/timeline/words.json --duration <s> [--series] [--vote] --keep`. Verifică: format (1080×1920 h264, audio, durată), loudness/liniște, cadre negre/înghețate, pauze moarte, hook, text suprapus, subtitrare vs text mare, cifre ca digits, card follow la final, carduri vot, metadate IG/YT/TT, miniatură în banda sigură + badge EPISODE. Specificație: eșantionare 3 fps la 540×960, Tesseract tsv, suprapunere = intersecție/arie minimă > 0.25 între linii diferite, zona subtitrării y 1500–1850 (full-res), text mare = înălțime ≥ 84 px în afara zonei de subtitrare. Cod de ieșire 1 la orice FAIL.
+**Script `qc_video.py` (recreat și validat pe clipurile 1–7):**
+`python3 toolbox/studio-kit/tools/qc_video.py --video out/X.mp4 --meta out/meta.json --cover out/cover.jpg --words projects/<p>/timeline/words.json --duration <s> --lines /home/claude/tts/clipN_lines.json [--series] [--vote] --out /tmp/qcN`
+Verifică: format 1080×1920 h264, audio, durată (≤60 s pentru Short-uri tăiate), loudness (−16…−12 LUFS) și peak, liniște > 1.5 s, cadre negre, hook (contrast în primele 2 s), imagine statică > 2 s, **text suprapus** (OCR, 3 fps), **subtitrare + text mare simultan**, cuvânt mare repetat în subtitrare, cuvinte-număr în subtitrări, voce: „$” sau „dollars 29” (bani) și promisiuni de trimis/dat, final: card FOLLOW (OCR full-res pe ultimele 3 s; acceptă și „new stories every day”), carduri A/B la `--vote`, metadate (exact 5 hashtag-uri IG, `#reelsinstagram`, fără etichete, first_comment, YT titlu/descriere/tag-uri, TikTok 5 hashtag-uri, „Not affiliated” la nume de unelte), miniatură (1080×1920, text în banda y300–1640, zone sus/jos goale, badge EPISODE la `--series`). Produce `qc_report.md` + `qc_sheet.jpg`; cod de ieșire 1 la FAIL. Durează ~12 s.
+Limite: OCR-ul poate rata text mic sau pe culori puternice (de aceea final-ul se verifică full-res și manual pe sheet). Rezultat 7 clipuri: 1–6 = 0 FAIL; clip 7 = 1 FAIL real (subtitrare sub cardul SupoClip) → reparat și re-randat.
 **Checklist manual:** fără „MISSING SHOT"/cadre roșii de eroare; imaginea = replica; Stick lizibil, rim light, nu iese din cadru, nu acoperă text; variație de cadre; 9:16 cu subiecții la mijloc; voce clară, muzică duckată, fără ghemuiri de SFX, ~−14 LUFS.
 Spun rezultatul QC într-o linie la livrare.
 
@@ -206,9 +210,28 @@ Spun rezultatul QC într-o linie la livrare.
 ---
 
 ## 12. Capcane cunoscute
-- Containerul se poate reseta: ce nu e în repo se pierde (proiectele clipN, modelele TTS, `qc_video.py`). Folosesc `toolbox/install.sh` și `toolbox/studio-kit/`.
+- Containerul se poate reseta: ce nu e în repo se pierde (proiectele clipN, modelele TTS, `qc_video.py`). Folosesc `toolbox/install.sh` și `toolbox/studio-kit/` (modelele TTS se re-descarcă manual, vezi §1.5).
 - `wd.sh` pare blocat dacă randez cadre de probă în paralel (CPU): așteaptă, termină.
 - Ora de azi deja trecută → slotul se mută pe ziua următoare; spun asta clar utilizatorului.
 - Claim-uri neverificabile despre unelte: le scot; spun doar ce e demonstrat (ex. „free software, not free to run").
 - `analyze_reference.py` detectează doar tăieturi dure.
 - Licențe: MIT/CC0/Unlicense = ok; AGPL/GPL = doar idei, nu cod; „other"/fără licență = nu copiez.
+
+---
+
+## 13. Playbook „performanță maximă” (aplic la fiecare video, fără să mai fiu rugat)
+1. **Înainte de scris:** citesc acest MD, memoria și lista de clipuri deja făcute (paletă, pachet de sunet, cuvânt de comentariu, slot) ca să aleg ceva NOU pe fiecare: paletă, pachet uisfx, cuvânt, hook.
+2. **Hook în 2 s:** primul cadru are deja un obiect/label mare + sunet; QC-ul verifică contrastul în primele 2 s.
+3. **Densitate de pop-up-uri:** câte un obiect real pe cuvânt-cheie (nu cadre), cu sunet diferit/pitch diferit; elementele rămân pe ecran până se termină ideea.
+4. **Sincron:** pop-urile pe `words` REALE; subtitrările se ascund pe tot intervalul cardurilor mari (de la începutul replicii, nu de la cuvânt).
+5. **Sunet:** un pachet uisfx per clip + SFX proprii pentru impact/whoosh; liniște scurtă înainte de momentul mare; stinger la final de scenă; −14 LUFS.
+6. **Cameră:** push-in lent pe fiecare shot, shake la impact, cel puțin un whip/flash/zoom motivat.
+7. **Verificare în 3 pași:** cadre-cheie înainte de randare; QC automat după; sheet văzut cu ochii.
+8. **Livrare completă** (§11) și, dacă e în flux, programare (§9).
+9. **După livrare:** adaug în acest MD (secțiunea 14) ce am învățat (capcană nouă, unealtă nouă, setare bună).
+
+## 14. Jurnal viu: cum adăugăm unelte noi
+Când găsim o unealtă/skill/plugin nou: (1) verific licența (MIT/Apache/CC0/Unlicense = ok; GPL/AGPL = doar idei; fără licență = nu), (2) gratuit și rulează în cloud fără PC-ul lui, (3) o clonez în `toolbox/` și o adaug în `install.sh`, (4) o testez pe un exemplu mic, (5) o descriu în `TOOLBOX.md` + o rând în §1.5b și în §5 (ce efect/capacitate aduce), (6) efectele vizuale noi se propun pe clip și se aprobă.
+Jurnal:
+- 2026-11-17: toolbox creat (9 unelte); aliniere reală a cuvintelor; `qc_video.py` recreat și rulat pe clipurile 1–7 (descoperit: subtitrare sub card în clipul 7, reparat); uisfx/jsfxr integrate; analizor de referință; `new_clip.sh`.
+- Căutare GitHub (2026-11-17): rămase de evaluat la nevoie: HyperFrames catalog (~450 blocuri, ex. `instagram-follow`), openmotion (format Motion.md), clippere open source pentru subiecte despre clipping (Anil-matcha, ClippedAI, ViralMint).

@@ -1,6 +1,6 @@
 import json,re,os
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)),'..'))
-I=json.load(open('/home/claude/tts/clip7/info.json')); C=I['cues']; D=I['duration']; W=I['words']
+I=json.load(open('/home/claude/tts/clipN/info.json')); C=I['cues']; D=I['duration']; W=I['words']
 norm=lambda w:re.sub(r'[.,?!:"“”\']','',w).lower()
 def wd(word,after=0.0):
     for w in W:
@@ -44,7 +44,7 @@ shots=[{"id":sid,"start":a,"end":b,"line":"","scene":sid,"set":"clip","in":{"typ
 st=lambda k:T[k][0]
 music=[{"start":0,"end":st('g2'),"mood":"playful","intensity":0.6},{"start":st('g2'),"end":st('q'),"mood":"playful","intensity":0.75},{"start":st('q'),"end":D,"mood":"playful","intensity":0.45}]
 json.dump({"title":"SupoClip vs OpusClip","duration":D,"shots":shots,"music":music,"music_gaps":[],"sfx":[]},open('story/shots.json','w'),indent=1)
-HID=[[round(wd('twenty')-0.1,2),round(wd('dollars')+0.9,2)],[round(wd('open')-0.1,2),round(wd('alternative')+1.4,2)],[round(wd('YouTube')-0.1,2),round(wd('Kick')+0.9,2)],[round(wd('moments')-0.1,2),round(wd('moments')+1.2,2)],[round(wd('catch')-0.1,2),round(wd('catch')+1.0,2)],[round(wd('keys')-0.1,2),round(wd('run')+1.4,2)],[round(wd('allow')-0.1,2),round(wd('credit')+1.2,2)],[round(q0-0.1,2),round(D,2)]]
+HID=[[round(wd('twenty')-0.1,2),round(wd('dollars')+0.9,2)],[round(C[1]['start']-0.03,2),round(wd('alternative')+1.4,2)],[round(wd('YouTube')-0.1,2),round(wd('Kick')+0.9,2)],[round(wd('moments')-0.1,2),round(wd('moments')+1.2,2)],[round(wd('catch')-0.1,2),round(wd('catch')+1.0,2)],[round(wd('keys')-0.1,2),round(wd('run')+1.4,2)],[round(wd('allow')-0.1,2),round(wd('credit')+1.2,2)],[round(q0-0.1,2),round(D,2)]]
 cfg=json.load(open('config.json')); cfg['title']='SupoClip vs OpusClip'
 cfg['duration']=D; cfg['hide']=HID; cfg['captionStyle']['hide']=HID
 cfg['captionStyle']['keywords']=['opusclip','supoclip','$29','open','source','youtube','twitch','kick','vertical','captions','catch','api','keys','free','allow','credit','comment','tag','follow']

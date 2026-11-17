@@ -33,3 +33,9 @@ w=wave.open(O+'/voice.wav','wb'); w.setnchannels(1); w.setsampwidth(2); w.setfra
 json.dump(dict(duration=round(len(y)/SR,3),cues=cues,words=words),open(O+'/info.json','w'),indent=1)
 subprocess.run(['ffmpeg','-y','-loglevel','error','-i',O+'/voice.wav','-b:a','192k',O+'/voice.mp3'],check=True)
 print('duration',round(len(y)/SR,2)); [print(c['i'],c['start'],c['end'],c['text']) for c in cues]
+
+# aliniere reală a cuvintelor (faster-whisper); dezactivare: NO_ALIGN=1
+if not os.environ.get('NO_ALIGN'):
+    al=os.path.join(os.path.dirname(os.path.abspath(__file__)),'tools','align_words.py')
+    if not os.path.exists(al): al='/home/claude/stickmindr8-queue/toolbox/studio-kit/tools/align_words.py'
+    r=subprocess.run(['python3',al,O],capture_output=True,text=True); print(r.stdout.strip() or r.stderr[-300:])
