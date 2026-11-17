@@ -12,6 +12,6 @@ export const layer = (g, cam, depth, fn) => { g.save(); fn(g); g.restore(); };
 export const P = (n) => (typeof n === 'object' && n) ? n : (POSES[n] || POSES.stand);
 export const S = (id, fn) => registerShot(id, { draw(g, t, info) { fn(g, info.globalT); } });
 export const WT = (w, after = 0) => { for (const [x, a] of WORDS) if (x.replace(/[.,?!:"“”]/g, '').toLowerCase() === w.toLowerCase() && a >= after) return a; throw new Error('word ' + w); };
-export const stick = (g, T, o) => drawFigure(g, { outfit: STICK, x: o.x, y: o.y, s: o.s ?? 1.9, facing: o.facing ?? 1, pose: P(o.pose || 'stand'), rot: o.rot, expr: o.expr || 'neutral', rim: o.rim ?? { color: '#8ae8ff', dir: [0.8, -0.6], w: 4 }, shadow: o.shadow ?? false, blink: Math.sin(T * 1.3 + (o.seed || 0)) > 0.97 ? 1 : 0 });
+export const stick = (g, T, o) => drawFigure(g, { outfit: STICK, x: o.x, y: o.y, s: o.s ?? 1.9, facing: o.facing ?? 1, pose: P(o.pose || 'stand'), rot: o.rot, expr: o.expr || 'neutral', rim: o.rim ?? { color: '#8ae8ff', dir: [0.8, -0.6], w: 4 }, shadow: o.shadow ?? false, blink: Math.sin(T * 1.3 + (o.seed || 0)) > 0.97 ? 1 : 0, hands: o.hands, look: o.look, talk: o.talk, prop: o.prop });
 export const post = (g, T, o = {}) => { vignette(g, o.vig ?? 0.42); if (!o.noMark) text(g, 'StickMindR8', E.W - 150, 60, { size: 30, weight: 800, color: '#ffffff', alpha: 0.7, stroke: 5, strokeColor: 'rgba(0,0,0,.6)' }); };
 export const H = { popK: (T, t0, d = 0.38) => ease.outBack(prog(T, t0, t0 + d)) };

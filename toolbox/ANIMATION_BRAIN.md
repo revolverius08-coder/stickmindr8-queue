@@ -236,3 +236,9 @@ Când găsim o unealtă/skill/plugin nou: (1) verific licența (MIT/Apache/CC0/U
 Jurnal:
 - 2026-11-17: toolbox creat (9 unelte); aliniere reală a cuvintelor; `qc_video.py` recreat și rulat pe clipurile 1–7 (descoperit: subtitrare sub card în clipul 7, reparat); uisfx/jsfxr integrate; analizor de referință; `new_clip.sh`.
 - Căutare GitHub (2026-11-17): rămase de evaluat la nevoie: HyperFrames catalog (~450 blocuri, ex. `instagram-follow`), openmotion (format Motion.md), clippere open source pentru subiecte despre clipping (Anil-matcha, ClippedAI, ViralMint).
+
+## §15 Motion v2 (17 nov 2026) — în demo, în așteptarea aprobării pentru clipuri reale
+- `studio-kit/engine/rig2d_v2.js` (copiat peste engine/rig2d.js de new_clip.sh): unghi de picior `aF/aB`, mâini desenate `hands:{F:{k:'point'|'open'|'fist'|'grip'|'relax'}}`.
+- `scenes/motion.js`: `spring/track` (overshoot), `idle` (respirație+balans), `body` (lean/dip), `arm` (IK, anticipare), `pointSeq` (anticipare→lovitură→tap→revenire, privire), `walker` (picioare ancorate, pași pe distanță, `strikes()` = momente pentru SFX), `fingerTip`. `scenes/walkmath.js` e matematică pură (rulează și în node).
+- `scenes/outro2.js`: outro redesenat (card sticlă cu bordură gradient, comentariu tastat, TAG cu @, FOLLOW stil IG, Stick care arată + tap + celebrare). Demo: `scenes/shots/motion_demo.g.js`, `motion_demo_build_shots.py`, `../motion_v2_demo.mp4`.
+- Regulă: arătat/mers/apucat și outro2 se folosesc în clipuri reale doar după aprobarea lui.
