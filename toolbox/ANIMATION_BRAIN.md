@@ -251,3 +251,4 @@ Jurnal:
 
 ### §15c Outro v4 (17 nov 2026, corecția lui)
 - `scenes/outro4.js`: Stick în colțul din dreapta-jos; cardurile apar centrate. Secvență: COMMENT (tastează CLIP) → Stick apasă SEND (devine verde) → cardul urcă → TAG A FRIEND → Stick apasă (devine verde „TAGGED ✓") → urcă → FOLLOW apare și e apăsat după ~0,5 s → „FOLLOWING ✓" + confetti. Fără zoom care taie cardurile (doar mic șoc la apăsare). Demo: `outro_v4_demo.mp4`.
+- Outro v4 fix (17 nov): cardul activ apare lângă mâna lui Stick (jos, slot y=1450, intră dinspre el), degetul ATINGE efectiv SEND / TAG / FOLLOW (țintă calculată cu lungimea degetului), apoi cardurile urcă; FOLLOW rămâne ultimul jos. Pitfall: `camera()` mută punctul focal în centrul ecranului — pentru zoom în jurul unui punct (fx,fy) folosește x=fx−540, y=fy−960, altfel conținutul se deplasează față de Stick; Stick se desenează în același `camera`.

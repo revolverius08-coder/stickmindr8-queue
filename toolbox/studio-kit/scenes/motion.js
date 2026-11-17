@@ -43,7 +43,7 @@ export function pointSeq(T, so, targets, o = {}) {
   const p = idle(T, { seed: o.seed || 0 }), end = o.end ?? 1e9, kF = [{ t: -9, v: [...REST_F], ang: REST_F[0], ext: REST_F[1], hand: o.startHand || 'relax' }], kB = [], bk = [{ t: -9, v: [0, 0, 0, 0] }];
   let lk = [{ t: -9, v: [0, 0] }]; let prevAng = REST_F[0];
   for (const tg of targets) {
-    const a = aim(so, tg.x, tg.y), t0 = tg.t, ang = a.ang, ext = Math.min(0.985, a.dist / (L1 + L2));
+    const a = aim(so, tg.x, tg.y), t0 = tg.t, ang = a.ang, ext = Math.min(0.985, Math.max(0.5, (a.dist - 27) / (L1 + L2)));
     kF.push({ t: t0 - 0.34, ang: lerp(prevAng, ang, -0.22), ext: 0.7, tap: 0, hand: 'point', f: 4.2, z: 0.9 });  // pull back (anticipation)
     kF.push({ t: t0 - 0.04, ang, ext, tap: 0, hand: 'point', f: 3.3, z: 0.46 });                                  // strike (overshoots)
     for (const tt of (tg.taps || [])) { kF.push({ t: tt, ang, ext: ext - 0.03, tap: 8, f: 9, z: 0.55 }); kF.push({ t: tt + 0.1, ang, ext, tap: 0, f: 8, z: 0.6 }); }
