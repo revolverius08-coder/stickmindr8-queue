@@ -248,3 +248,6 @@ Jurnal:
 - `motion.js`: `secondary()` (glugă/tiv/șnururi din accelerația corpului), `turnF` (întoarcere cu capul înainte), `jumpAt` (anticipare→zbor→aterizare), mers + alergare (`walker(...,{run:true})`), `camera/shakeAt/camLerp` (zoom, șoc, push-in), `pointSeq` cu `press` (apăsare cu degetul).
 - `outro3.js`: cardurile alunecă la nivelul umărului lui Stick; arată drept spre centrul cardului, apasă FOLLOW cu degetul, zoom + șoc la apăsare. Demo: `motion_v3_demo.mp4`, `scenes/shots/motion_demo.g.js`.
 - Regulă: folosit în clipuri reale doar când cere el; outro3 devine standard doar după aprobare.
+
+### §15c Outro v4 (17 nov 2026, corecția lui)
+- `scenes/outro4.js`: Stick în colțul din dreapta-jos; cardurile apar centrate. Secvență: COMMENT (tastează CLIP) → Stick apasă SEND (devine verde) → cardul urcă → TAG A FRIEND → Stick apasă (devine verde „TAGGED ✓") → urcă → FOLLOW apare și e apăsat după ~0,5 s → „FOLLOWING ✓" + confetti. Fără zoom care taie cardurile (doar mic șoc la apăsare). Demo: `outro_v4_demo.mp4`.
