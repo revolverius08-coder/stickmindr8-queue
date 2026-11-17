@@ -170,9 +170,9 @@ function torsoWear(g, o, p, pass) {
     case 'hoodie': case 'tracksuit': case 'jersey': case 'tshirt': case 'suit': case 'dress': {
       const col = o.top === 'suit' ? (sil ? o._sil : o.color || '#2a2833') : c;
       const top = sy - 7, bot = hy + (o.top === 'jersey' || o.top === 'tshirt' ? 4 : 12);
-      const hw = o.stick ? 19 : 15, bw2 = o.stick ? 24 : 15; g.fillStyle = col; g.beginPath(); g.moveTo(sx - hw, top + 6); g.quadraticCurveTo(sx, top - 4, sx + hw, top + 6); g.lineTo(hx + bw2, bot); g.quadraticCurveTo(hx, bot + 5, hx - bw2, bot); g.closePath(); g.fill();
+      const hw = o.stick ? 19 : 15, bw2 = o.stick ? 24 : 15; g.fillStyle = col; g.beginPath(); g.moveTo(sx - hw, top + 6); g.quadraticCurveTo(sx, top - 4, sx + hw, top + 6); const hd = o.sec?.hem || 0; g.lineTo(hx + bw2 + hd, bot); g.quadraticCurveTo(hx + hd * 0.6, bot + 5, hx - bw2 + hd, bot); g.closePath(); g.fill();
       if (o.top === 'dress') poly(g, [[hx - 14, hy - 8], [hx + 14, hy - 8], [hx + 34, hy + 50], [hx - 34, hy + 50]], col);
-      if (!sil && o.top === 'hoodie') { g.fillStyle = d; g.fillRect(hx - 15, bot - 7, 30, 7); seg(g, [[sx + 6, sy - 2], [sx + 7, sy + 18]], 2, shade(c, 0.4)); }
+      if (!sil && o.top === 'hoodie') { g.fillStyle = d; g.fillRect(hx - 15 + hd * 0.7, bot - 7, 30, 7); seg(g, [[sx + 6, sy - 2], [sx + 7 + (o.sec?.str || 0), sy + 18]], 2, shade(c, 0.4)); }
       if (!sil && o.top === 'suit') { poly(g, [[sx - 1, sy - 4], [sx + 4, sy - 4], [sx + 5, sy + 40], [sx + 1, sy + 46]], o.color2 || '#c0392b'); }
       if (!sil && o.top === 'jersey' && o.number) { g.fillStyle = o.color2 || '#fff'; g.font = '700 24px Nunito'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(o.number, (sx + hx) / 2 + 2, (sy + hy) / 2); }
       if (!sil && o.top === 'tracksuit') seg(g, [[sx + 12, sy + 2], [hx + 12, hy]], 3, o.color2 || '#ffffff');
@@ -193,7 +193,7 @@ function sleeveColor(o, far) { const c = o.top === 'labcoat' ? '#f3f0f6' : o.top
 export function drawFigure(g, o) {
   const st = S(), ink = o.ink || st.ink, far = o.inkFar || st.inkFar;
   const p = o.pose || POSES.stand, s = (o.s ?? 1) * (o.outfit?.kid ? 0.72 : 1), f = o.facing ?? 1;
-  const of = { ...(o.outfit || {}), _ink: ink };
+  const of = { ...(o.outfit || {}), _ink: ink, sec: o.sec };
   const rim = o.rim === false ? null : { dir: [-0.8, -0.5], w: st.rimWidth, color: '#ffc68a', ...(o.rim || {}) };
   g.save(); if (o.alpha != null) g.globalAlpha *= o.alpha;
   if (o.shadow !== false && !o.rot) { g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(o.x, o.y + 2, 34 * s, 6 * s, 0, 0, Math.PI * 2); g.fill(); }
@@ -209,14 +209,16 @@ function body(g, o, p, s, f, of, ink, far, rim, flat) {
 }
 // ---- v2 (motion layer): optional foot pitch (p.aF / p.aB, radians) and drawn hands (o.hands = {F:{k:'point'|'open'|'fist'|'grip'|'relax', ext, tap, rot}, B:..})
 const toeOf = (f, a, l) => [f[0] + l * Math.cos(a || 0), f[1] + l * Math.sin(a || 0)];
-export function drawHand(g, e, h, hs, ink, grow = 0) {
-  const k = typeof hs === 'string' ? { k: hs } : hs, a = Math.atan2(h[1] - e[1], h[0] - e[0]) + (k.rot || 0), d = [Math.cos(a), Math.sin(a)], n = [-d[1], d[0]];
-  const r = ({ fist: 8.4, grip: 9.4, point: 8, open: 7.6, relax: 7 }[k.k] || 8) + grow * 0.5, c = [h[0] + d[0] * 5, h[1] + d[1] * 5], W = (w) => w + grow;
-  circle(g, c[0], c[1], r, ink);
-  const at = (u, v) => [c[0] + d[0] * u + n[0] * v, c[1] + d[1] * u + n[1] * v];
-  if (k.k === 'point') { const L = (k.ext ?? 1) * 21 + (k.tap || 0); seg(g, [at(3, -1.5), at(3 + L, -1.5)], W(6.2), ink); circle(g, at(3 + L, -1.5)[0], at(3 + L, -1.5)[1], W(3.9), ink); seg(g, [at(2, 5), at(10, 9)], W(5), ink); }
-  else if (k.k === 'open') { const sp = k.spread ?? 0.42; for (const ang of [-sp, -sp / 3, sp / 3, sp]) { const q = [Math.cos(a + ang), Math.sin(a + ang)]; seg(g, [[c[0] + q[0] * 4, c[1] + q[1] * 4], [c[0] + q[0] * 17, c[1] + q[1] * 17]], W(4.8), ink); } seg(g, [at(0, 6), at(7, 12)], W(4.8), ink); }
-  else if (k.k === 'fist' || k.k === 'grip') { seg(g, [at(3, 4), at(9, 6)], W(5), ink); }
+const CURL = { relax: [0.35, 0.42, 0.5, 0.58, 0.3], open: [0.05, 0.05, 0.07, 0.09, 0], fist: [1, 1, 1, 1, 0.7], grip: [0.78, 0.84, 0.9, 0.96, 0.5], point: [0, 1, 1, 1, 0.75], cup: [0.3, 0.32, 0.36, 0.4, 0.1], pinch: [0.7, 0.2, 0.25, 0.3, 0.6] };
+export function drawHand(g, e, h, hs, ink, grow = 0) { // fingers: index, middle, ring, pinky (+ thumb); k.u = blend 0..1 from k.prev
+  const k = typeof hs === 'string' ? { k: hs } : hs, a = Math.atan2(h[1] - e[1], h[0] - e[0]) + (k.rot || 0), d = [Math.cos(a), Math.sin(a)], n = [-d[1], d[0]], W = (w) => w + grow;
+  const cur = CURL[k.k] || CURL.relax, prv = CURL[k.prev] || cur, u = k.u == null ? 1 : k.u, cv = cur.map((c, i) => prv[i] + (c - prv[i]) * u);
+  if (k.wig) for (let i = 0; i < 4; i++) cv[i] = Math.max(0, cv[i] + k.wig * (0.5 + 0.5 * Math.sin((k.tm || 0) * 15 + i * 0.9)) * 0.35);
+  const c = [h[0] + d[0] * 5, h[1] + d[1] * 5], at = (uu, v) => [c[0] + d[0] * uu + n[0] * v, c[1] + d[1] * uu + n[1] * v], dir = (an) => [Math.cos(an), Math.sin(an)];
+  circle(g, c[0], c[1], 7.4 + grow * 0.5, ink);
+  const sp = k.spread ?? (k.k === 'open' ? 0.14 : 0), vs = [-5, -1.7, 1.6, 4.6], Ls = [k.k === 'point' ? 19 + (k.tap || 0) : 12.5, 13.5, 12.5, 10];
+  for (let i = 0; i < 4; i++) { const b = at(3, vs[i]), a1 = a + (i - 1.5) * sp + cv[i] * 1.35, a2 = a1 + cv[i] * 1.25, L = Ls[i], l1 = L * 0.55, l2 = L * 0.45, d1 = dir(a1), d2 = dir(a2), p1 = [b[0] + d1[0] * l1, b[1] + d1[1] * l1], p2 = [p1[0] + d2[0] * l2, p1[1] + d2[1] * l2]; seg(g, [b, p1, p2], W(i === 0 && k.k === 'point' ? 5.6 : 4.5), ink); }
+  const tb = at(1, 6), at1 = a + 1.15 - cv[4] * 0.75, d3 = dir(at1); seg(g, [tb, [tb[0] + d3[0] * 9, tb[1] + d3[1] * 9]], W(4.6), ink);
 }
 function parts(g, o, p, of, ink, far, pass, grow = 0) {
   const sil = pass === 'sil', L = 12.5 + grow, A = 11 + grow, T = 15 + grow, HR = 26 + grow * 0.6;
@@ -228,7 +230,7 @@ function parts(g, o, p, of, ink, far, pass, grow = 0) {
   if (!sil && sl) seg(g, sl === 'long' ? [p.sh, p.eB, [lerp(p.eB[0], p.hB[0], 0.7), lerp(p.eB[1], p.hB[1], 0.7)]] : [p.sh, [lerp(p.sh[0], p.eB[0], 0.75), lerp(p.sh[1], p.eB[1], 0.75)]], 16, sleeveColor(of, true));
   if (of.gloves) circle(g, p.hB[0], p.hB[1], 8.5 + grow, sil ? ink : shade(of.gloves, -0.2));
   // hair / hood behind head
-  if (of.top === 'hoodie' && of.head !== 'hood') { g.fillStyle = sil ? ink : shade(of.color || '#d64a33', -0.28); g.beginPath(); g.ellipse(p.sh[0] - 9, p.sh[1] - 6, 15 + grow, 11 + grow, -0.3, 0, Math.PI * 2); g.fill(); }
+  if (of.top === 'hoodie' && of.head !== 'hood') { g.fillStyle = sil ? ink : shade(of.color || '#d64a33', -0.28); g.beginPath(); g.ellipse(p.sh[0] - 9 + (of.sec?.hood?.[0] || 0), p.sh[1] - 6 + (of.sec?.hood?.[1] || 0), 15 + grow, 11 + grow, -0.3 + (of.sec?.hood?.[2] || 0), 0, Math.PI * 2); g.fill(); }
   if (of.head === 'hood') { const c = of.headColor || of.color || '#d64a33'; circle(g, p.head[0] - 6, p.head[1] + 2, HR * 1.22, sil ? ink : shade(c, -0.12)); }
   if (['ponytail', 'bun'].includes(of.head)) drawHeadwear(g, of, p.head[0], p.head[1], HR, pass);
   // torso

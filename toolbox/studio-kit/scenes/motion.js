@@ -1,7 +1,7 @@
 // motion.js - Stick motion layer v2 (2D, on the 11-point rig): springs with overshoot, idle weight shift, 2-bone arm IK with anticipation,
 // look-at, drawn hands (point / grip), ground-locked walk, carry with weight. Pure code, no 3D.
 import { POSES } from '/engine/rig2d.js';
-import { walkFrame, trap, speedAt, stride, phaseAt } from './walkmath.js';
+import { walkFrame, trap, speedAt, stride, phaseAt, DUTY, RUN_DUTY } from './walkmath.js';
 import { strikes } from './walkmath.js';
 export { walkFrame, trap, speedAt, stride, phaseAt, strikes };
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, DEG = Math.PI / 180;
@@ -29,12 +29,13 @@ export function idle(T, { base = 'stand', seed = 0, amt = 1 } = {}) {
 // body offsets [lean, dip, headX, headY]: lean moves shoulders/head forward, dip lowers the hips (knees bend, feet stay)
 export function body(p, [lean, dip, hx, hy]) { shift(p, ['sh', 'head', 'eF', 'hF', 'eB', 'hB'], lean, 0); shift(p, ['hip'], -lean * 0.3, dip); shift(p, ['sh', 'head', 'eF', 'hF', 'eB', 'hB'], 0, dip); shift(p, ['head'], hx, hy); return fixLegs(p); }
 // arm track -> sets eF/hF (or eB/hB) on p, returns {hand, ang}
-export function arm(T, p, keys, side = 'F') {
-  const v = track(T, keys.map((k) => ({ ...k, v: [k.ang, k.ext, k.tap ?? 0] }))); let hand = keys[0].hand || 'relax', ho = {};
-  for (const k of keys) if (T >= k.t) { hand = k.hand || hand; ho = k.ho || ho; }
+export function arm(T, p, keys, side = 'F', mod = null) {
+  const v = track(T, keys.map((k) => ({ ...k, v: [k.ang, k.ext, k.tap ?? 0] }))); if (mod) mod(v);
+  let hand = keys[0].hand || 'relax', prev = hand, ts = -9, ho = {};
+  for (const k of keys) if (T >= k.t) { if (k.hand && k.hand !== hand) { prev = hand; hand = k.hand; ts = k.t; } if (k.ho) ho = k.ho; }
   const sh = p.sh, A = armAt(sh, v[0], v[1]); p['e' + side] = A.e; p['h' + side] = A.h;
   const fa = Math.atan2(A.h[1] - A.e[1], A.h[0] - A.e[0]); let rot = 0; if (hand === 'point') rot = v[0] - fa + (ho.rot || 0);
-  return { hand: { k: hand, ext: 1, tap: v[2], rot, ...ho }, ang: v[0] };
+  return { hand: { k: hand, prev, u: clamp((T - ts) / 0.16), tap: v[2], rot, tm: T, ...ho }, ang: v[0] };
 }
 export const lookVec = (so, p, tx, ty) => { const [lx, ly] = toLocal(so, tx, ty), d = [lx - p.head[0], ly - p.head[1]], n = Math.hypot(d[0], d[1]) || 1; return [d[0] / n, d[1] / n]; };
 // ---- pointing sequence: anticipation -> strike with overshoot -> taps -> hold micro-motion -> return. targets [{t,x,y,taps:[t..]}]
@@ -59,16 +60,40 @@ export function pointSeq(T, so, targets, o = {}) {
 }
 // ---- walking: x from x0 to x1 during [t0,t1], then settles into idle; returns {x, pose, hands, moving, vk, dist}
 export function walker(T, so, t0, t1, x0, x1, o = {}) {
-  const D = Math.abs(x1 - x0), dir = Math.sign(x1 - x0) || 1, s = so.s, { st } = stride(D / s, o.st || 26), ta = o.ta ?? 0.5, td = o.td ?? 0.6;
+  const run = !!o.run, duty = run ? RUN_DUTY : DUTY, D = Math.abs(x1 - x0), dir = Math.sign(x1 - x0) || 1, s = so.s, { st } = stride(D / s, o.st || (run ? 42 : 26), duty), ta = o.ta ?? (run ? 0.35 : 0.5), td = o.td ?? (run ? 0.3 : 0.6);
   const dist = trap(T, t0, t1, D, ta, td), x = x0 + dir * dist, vmax = D / ((t1 - t0) - (ta + td) / 2), vk = clamp(speedAt(T, t0, t1, D, ta, td) / vmax);
-  const hands = { F: { k: 'relax' }, B: { k: 'relax' } }, wo = { st, lift: o.lift ?? 15, bob: o.bob ?? 3.2, swing: o.swing ?? 0.5, lean: o.lean ?? 3.5 };
-  if (T <= t0) return { x, pose: idle(T, { seed: o.seed || 0 }), hands, moving: false, vk: 0, dist };
-  if (T <= t1) return { x, pose: walkFrame(phaseAt(dist / s, st), { ...wo, vk }), hands, moving: true, vk, dist };
-  const k = clamp((T - t1) / 0.5), e = k * k * (3 - 2 * k); // settle: passing pose -> idle, feet close up
-  return { x, pose: mixPose(walkFrame(phaseAt(D / s, st), { ...wo, vk: 0 }), idle(T, { seed: o.seed || 0 }), e), hands, moving: false, vk: 0, dist };
+  const hands = { F: { k: run ? 'fist' : 'relax' }, B: { k: run ? 'fist' : 'relax' } }, wo = { st, run, lift: o.lift ?? (run ? 32 : 15), bob: o.bob ?? (run ? 14 : 3.2), swing: o.swing ?? (run ? 0.9 : 0.5), lean: o.lean ?? (run ? 12 : 3.5) };
+  if (T <= t0) return { x, pose: idle(T, { seed: o.seed || 0 }), hands: { F: { k: 'relax' }, B: { k: 'relax' } }, moving: false, vk: 0, dist };
+  if (T <= t1) return { x, pose: walkFrame(phaseAt(dist / s, st, duty), { ...wo, vk }), hands, moving: true, vk, dist };
+  const k = clamp((T - t1) / (o.settle ?? 0.5)), e = k * k * (3 - 2 * k);
+  return { x, pose: mixPose(walkFrame(phaseAt(D / s, st, duty), { ...wo, vk: 0 }), idle(T, { seed: o.seed || 0 }), e), hands: { F: { k: 'relax' }, B: { k: 'relax' } }, moving: false, vk: 0, dist };
 }
 // blend two poses (all numeric fields incl. aF/aB)
 export const mixPose = (a, b, k) => { const o = {}; for (const key in a) o[key] = Array.isArray(a[key]) ? a[key].map((v, i) => lerp(v, b[key][i], k)) : lerp(a[key], b[key], k); return o; };
 export const posePlain = fresh;
 // fingertip in world coords (for guide lines / ripples) from pointSeq output
-export function fingerTip(so, p, hand) { const e = p.eF, h = p.hF, a = Math.atan2(h[1] - e[1], h[0] - e[0]) + (hand.rot || 0); const L = 8 + (hand.ext ?? 1) * 21 + (hand.tap || 0); return toWorld(so, h[0] + Math.cos(a) * L, h[1] + Math.sin(a) * L); }
+export function fingerTip(so, p, hand) { const e = p.eF, h = p.hF, a = Math.atan2(h[1] - e[1], h[0] - e[0]) + (hand.rot || 0); const L = 8 + 19 + (hand.tap || 0); return toWorld(so, h[0] + Math.cos(a) * L, h[1] + Math.sin(a) * L); }
+
+// ---- secondary motion: spring-filtered acceleration of a support point -> hood / hem / drawstring offsets (stateless; feed poseAt(t) -> {sh,hip} in local units incl. body travel)
+export function secondary(poseAt, T, { f = 2.8, z = 0.3, gain = 1 } = {}) {
+  const w = 2 * Math.PI * f, wd = w * Math.sqrt(1 - z * z), dt = 0.04; let dx = 0, dy = 0, dh = 0;
+  for (let i = 0; i < 16; i++) { const tau = T - i * dt, a = poseAt(tau - dt), b = poseAt(tau), c = poseAt(tau + dt), h = Math.exp(-z * w * i * dt) * Math.sin(wd * i * dt) / wd;
+    dx -= (a.sh[0] - 2 * b.sh[0] + c.sh[0]) / (dt * dt) * h * dt; dy -= (a.sh[1] - 2 * b.sh[1] + c.sh[1]) / (dt * dt) * h * dt; dh -= (a.hip[0] - 2 * b.hip[0] + c.hip[0]) / (dt * dt) * h * dt; }
+  const cl = (v, m) => Math.max(-m, Math.min(m, v));
+  return { hood: [cl(dx * 0.05 * gain, 7), cl(dy * 0.04 * gain, 5), cl(dx * 0.004 * gain, 0.35)], hem: cl(dh * 0.07 * gain, 8), str: cl(dx * 0.06 * gain, 9) };
+}
+// ---- turn: facing flips through a thin silhouette (head/eyes should lead the turn)
+export function turnF(T, t0, dur, from = 1, to = -1) { const u = clamp((T - t0) / dur); if (u <= 0) return from; if (u >= 1) return to; const m = 0.2 + 0.8 * Math.abs(Math.cos(Math.PI * u)); return (u < 0.5 ? from : to) * m; }
+// ---- jump: anticipation crouch -> launch -> arc -> landing squash. returns {pose, lift (local units up), phase}
+export function jumpAt(T, t0, { dur = 0.75, H = 150, crouch = 0.3, from = null } = {}) {
+  const E = (a, b, k) => mixPose(a, b, clamp(k)), st = idle(T, { seed: 0 }), rd = posePlain('ready'), cr = posePlain('crouch'), jp = posePlain('jump'), tL = t0 + dur;
+  if (T < t0 - crouch) return { pose: from || st, lift: 0, phase: 'pre' };
+  if (T < t0) { const u = (T - (t0 - crouch)) / crouch; return { pose: E(from || st, E(rd, cr, 0.55), u * u * (3 - 2 * u)), lift: 0, phase: 'crouch' }; }
+  if (T < tL) { const u = (T - t0) / dur, k = spring(T, t0, { f: 4.2, z: 0.6 }); return { pose: u < 0.78 ? E(E(rd, cr, 0.3), jp, k) : E(jp, rd, (u - 0.78) / 0.22), lift: H * 4 * u * (1 - u), phase: 'air', u }; }
+  const u = T - tL, sq = Math.exp(-u * 6) * Math.cos(u * 11);
+  return { pose: E(cr, st, clamp((u - 0.12) / 0.5)), lift: -Math.max(0, sq) * 0, phase: 'land', since: u };
+}
+// ---- camera: apply before drawing the world, restore before UI. c = {z, fx, fy, x, y, rot}
+export function camera(g, c = {}) { g.translate(540 + (c.x || 0), 960 + (c.y || 0)); g.rotate(c.rot || 0); g.scale(c.z || 1, c.z || 1); g.translate(-(c.fx ?? 540), -(c.fy ?? 960)); }
+export function shakeAt(T, t0, amp = 14, dur = 0.45) { const u = (T - t0) / dur; if (u < 0 || u > 1) return { x: 0, y: 0, rot: 0 }; const e = (1 - u) * (1 - u); return { x: Math.sin(u * 70) * amp * e, y: Math.cos(u * 83) * amp * e * 0.8, rot: Math.sin(u * 55) * 0.012 * e * amp / 14 }; }
+export const camLerp = (T, t0, t1, a, b, ease = (u) => u * u * (3 - 2 * u)) => { const u = ease(clamp((T - t0) / (t1 - t0))); return a + (b - a) * u; };

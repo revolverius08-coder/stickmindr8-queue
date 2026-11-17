@@ -242,3 +242,9 @@ Jurnal:
 - `scenes/motion.js`: `spring/track` (overshoot), `idle` (respirație+balans), `body` (lean/dip), `arm` (IK, anticipare), `pointSeq` (anticipare→lovitură→tap→revenire, privire), `walker` (picioare ancorate, pași pe distanță, `strikes()` = momente pentru SFX), `fingerTip`. `scenes/walkmath.js` e matematică pură (rulează și în node).
 - `scenes/outro2.js`: outro redesenat (card sticlă cu bordură gradient, comentariu tastat, TAG cu @, FOLLOW stil IG, Stick care arată + tap + celebrare). Demo: `scenes/shots/motion_demo.g.js`, `motion_demo_build_shots.py`, `../motion_v2_demo.mp4`.
 - Regulă: arătat/mers/apucat și outro2 se folosesc în clipuri reale doar după aprobarea lui.
+
+### §15b Motion v3 (17 nov 2026, aprobat de el: „vreau toate… și mult mai multe”)
+- `rig2d_v2.js` acum are degete individuale (`hands:{F:{k:'point'|'open'|'fist'|'grip'|'relax'|'cup'|'pinch', wig}}`, trecere lină între forme) și mișcare secundară `sec:{hood,hem,str}`.
+- `motion.js`: `secondary()` (glugă/tiv/șnururi din accelerația corpului), `turnF` (întoarcere cu capul înainte), `jumpAt` (anticipare→zbor→aterizare), mers + alergare (`walker(...,{run:true})`), `camera/shakeAt/camLerp` (zoom, șoc, push-in), `pointSeq` cu `press` (apăsare cu degetul).
+- `outro3.js`: cardurile alunecă la nivelul umărului lui Stick; arată drept spre centrul cardului, apasă FOLLOW cu degetul, zoom + șoc la apăsare. Demo: `motion_v3_demo.mp4`, `scenes/shots/motion_demo.g.js`.
+- Regulă: folosit în clipuri reale doar când cere el; outro3 devine standard doar după aprobare.
