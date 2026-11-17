@@ -25,7 +25,7 @@ function stickPointing(g, T, so, targets, o) {
   stick(g, T, { ...so, pose: R.pose, expr: o.expr || 'smile', hands: R.hands, look: R.look });
   if (R.hands.F.k === 'point') { const tip = fingerTip(so, R.pose, R.hands.F); for (const tg of targets) { tipGuide(g, so, tip, [tg.x, tg.y], (T - tg.t) / 0.7); for (const tt of tg.taps || []) ripple(g, tg.x, tg.y, T, tt); } }
 }
-export const Q2 = { x: 540, y: 600, w: 820, h: 500 };
+export const Q2 = { x: 540, y: 860, w: 820, h: 500 };
 export function outro2Question(g, T, o) {
   bg2(g, T, { q: true }); const k = popK(T, o.t0, 0.55), c = Q2;
   if (k > 0.01) { const fy = Math.sin(T * 1.3) * 6; g.save(); g.translate(c.x, c.y + fy); g.scale(k * pul(T, o.t0), k * pul(T, o.t0)); g.rotate((1 - Math.min(1, k)) * 0.35 + Math.sin(T * 0.8) * 0.01);
@@ -34,11 +34,11 @@ export function outro2Question(g, T, o) {
     o.white.forEach((s, i) => K.text(g, s, 0, -92 + i * 80, { size: 76, weight: 900, color: '#fff', stroke: 10, strokeColor: '#000' }));
     const gk = popK(T, o.tGold, 0.38); if (gk > 0.01) o.gold.forEach((s, i) => { g.save(); g.translate(0, 82 + i * 84); g.scale(gk, gk); const gg = g.createLinearGradient(-200, -30, 200, 30); gg.addColorStop(0, '#cfeeff'); gg.addColorStop(1, '#7fd4ff'); K.text(g, s, 0, 0, { size: 84, weight: 900, color: '#cfeeff', stroke: 10, strokeColor: '#000' }); g.restore(); });
     g.restore(); }
-  const so = { x: 420, y: 1420, s: 2.0, facing: 1 }, shrug = T >= o.tGold + 0.35;
-  if (!shrug) stickPointing(g, T, so, [{ t: o.t0 + 0.05, x: Q2.x - 40, y: Q2.y + Q2.h / 2 + 18, taps: [o.t0 + 0.42] }], { end: o.tGold + 0.3, seed: 1 });
+  const so = { x: 300, y: 1540, s: 2.1, facing: 1 }, shrug = T >= o.tGold + 0.35;
+  if (!shrug) stickPointing(g, T, so, [{ t: o.t0 + 0.05, x: Q2.x, y: Q2.y, taps: [o.t0 + 0.42] }], { end: o.tGold + 0.3, seed: 1 });
   else { const sh = spring(T, o.tGold + 0.35, { f: 3.2, z: 0.45 }), p = mixPose(idle(T, { seed: 1 }), posePlain('shrug'), clamp(sh)); stick(g, T, { ...so, pose: p, expr: 'thinking', hands: { F: { k: 'open' }, B: { k: 'open' } } }); }
 }
-export const CTA2 = { bub: { x: 540, y: 430 }, tag: { x: 540, y: 810 }, fol: { x: 540, y: 1170 } };
+export const CTA2 = { bub: { x: 540, y: 720 }, tag: { x: 540, y: 1020 }, fol: { x: 540, y: 1330 } };
 export function outro2CTA(g, T, o) {
   bg2(g, T, {}); const cs = 0.8, kb = popK(T, o.tC - 0.05, 0.5), kt = popK(T, o.tTg - 0.05, 0.45), kf = popK(T, o.tF - 0.05, 0.55), done = T > o.tTap + 0.04, flt = (p) => Math.sin(T * 1.7 + p) * 7, word = o.commentWord ?? 'BELOW';
   // 1) comment card: title + typed input
@@ -59,7 +59,7 @@ export function outro2CTA(g, T, o) {
     for (let i = 0; i < 2; i++) { const kk = popK(T, o.tTg + 0.2 + i * 0.12, 0.35); if (kk > 0.01) { g.save(); g.translate(318 + i * 40, 62); g.scale(kk, kk); circle(g, 0, 0, 22, i ? '#ffe08a' : '#7fd4ff'); circle(g, 0, -6, 7, '#15152a'); g.fillStyle = '#15152a'; g.beginPath(); g.arc(0, 14, 11, Math.PI, 0); g.fill(); g.restore(); } }
     g.restore(); }
   // 3) follow card
-  const bx = CTA2.fol.x, by = CTA2.fol.y + 118 * cs;
+  const bx = CTA2.fol.x, by = CTA2.fol.y + 118 * cs, BTN = [bx + 240, by];
   if (kf > 0.01) { const b = CTA2.fol; g.save(); g.translate(b.x, b.y + flt(3.2)); g.scale(cs * kf * pul(T, o.tF), cs * kf * pul(T, o.tF)); g.rotate((1 - Math.min(1, kf)) * 0.3); glow(g, 0, 0, 560, '#a98bff', 0.14); glass(g, 880, 500, 60, '#ff6a8a', '#8a6bff', T);
     const R = 108; g.save(); g.translate(-250, -84); const rg = g.createConicGradient ? g.createConicGradient(T * 1.2, 0, 0) : null; if (rg) { rg.addColorStop(0, '#feda75'); rg.addColorStop(0.3, '#fa7e1e'); rg.addColorStop(0.55, '#d62976'); rg.addColorStop(0.8, '#962fbf'); rg.addColorStop(1, '#feda75'); g.fillStyle = rg; } else g.fillStyle = '#d62976'; g.beginPath(); g.arc(0, 0, R + 12, 0, 7); g.fill(); g.beginPath(); g.arc(0, 0, R + 3, 0, 7); g.fillStyle = '#0b0d12'; g.fill();
     g.beginPath(); g.arc(0, 0, R - 4, 0, 7); g.clip(); if (AV && AV.naturalWidth) g.drawImage(AV, -R, -R, R * 2, R * 2); else circle(g, 0, 0, R, '#222'); g.restore();
@@ -71,10 +71,9 @@ export function outro2CTA(g, T, o) {
     if (ru > -0.12 && ru < 0.7) { const r = clamp((ru + 0.12) / 0.5); g.globalAlpha = 0.55 * (1 - r); circle(g, 0, 122, 30 + 130 * r, 'rgba(255,255,255,0.9)'); g.globalAlpha = 1; }
     g.restore(); }
   // cursor + confetti
-  const cu = ease.inOut(prog(T, o.tF + 0.25, o.tTap - 0.1));
-  if (T > o.tF + 0.25 && T < o.tTap + 1.1) { const cx = lerp(640, bx + 40, cu), cy = lerp(1800, by + 30, cu), press = 1 - 0.18 * Math.sin(Math.PI * clamp((T - (o.tTap - 0.1)) / 0.28)); g.save(); g.translate(cx, cy); g.scale(press, press); g.fillStyle = '#fff'; g.strokeStyle = '#000'; g.lineWidth = 6; g.beginPath(); g.moveTo(0, 0); g.lineTo(0, 78); g.lineTo(20, 60); g.lineTo(36, 98); g.lineTo(52, 90); g.lineTo(36, 54); g.lineTo(62, 52); g.closePath(); g.fill(); g.stroke(); g.restore(); }
+  const cu = 0;
   const cu2 = T - o.tTap; if (cu2 > 0 && cu2 < 1.8) { const r = rng(5); for (let i = 0; i < 80; i++) { const a = -1.2 - r() * 1.6 + (r() - 0.5), v = 500 + r() * 900, ph = r() * 6.28, x = bx + Math.cos(a) * v * cu2 * 0.7 + (r() - 0.5) * 60, y = by + Math.sin(a) * v * cu2 * 0.7 + 1500 * cu2 * cu2; g.save(); g.globalAlpha = 1 - clamp((cu2 - 1.2) / 0.6); g.translate(x, y); g.rotate(ph + cu2 * (6 + r() * 8)); g.fillStyle = ['#cfeeff', '#ff2d55', '#4af08a', '#4ac8ff', '#ffe08a', '#a98bff'][i % 6]; g.fillRect(-9, -15, 18, 30); g.restore(); } }
   // Stick (bottom right) points at each card in turn, taps on its pop, then celebrates on FOLLOW
-  const so = { x: 930, y: 1810, s: 1.9, facing: -1 };
-  stickPointing(g, T, so, [{ t: o.tC, x: CTA2.bub.x + 330, y: CTA2.bub.y + 20, taps: [o.tC + 0.35] }, { t: o.tTg, x: CTA2.tag.x + 340, y: CTA2.tag.y, taps: [o.tTg + 0.3] }, { t: o.tF, x: CTA2.fol.x + 370, y: CTA2.fol.y + 40, taps: [o.tF + 0.3, o.tTap - 0.05] }], { end: 1e9, seed: 2, after: { t: o.tTap + 0.1 } });
+  const so = { x: 965, y: 1810, s: 2.1, facing: -1 };
+  stickPointing(g, T, so, [{ t: o.tC, x: CTA2.bub.x, y: CTA2.bub.y, taps: [o.tC + 0.35] }, { t: o.tTg, x: CTA2.tag.x, y: CTA2.tag.y, taps: [o.tTg + 0.3] }, { t: o.tF, x: BTN[0], y: BTN[1], taps: [o.tF + 0.3], press: [o.tTap - 0.05] }], { end: 1e9, seed: 2, after: { t: o.tTap + 0.1 } });
 }

@@ -45,7 +45,8 @@ export function pointSeq(T, so, targets, o = {}) {
     const a = aim(so, tg.x, tg.y), t0 = tg.t, ang = a.ang, ext = Math.min(0.985, a.dist / (L1 + L2));
     kF.push({ t: t0 - 0.34, ang: lerp(prevAng, ang, -0.22), ext: 0.7, tap: 0, hand: 'point', f: 4.2, z: 0.9 });  // pull back (anticipation)
     kF.push({ t: t0 - 0.04, ang, ext, tap: 0, hand: 'point', f: 3.3, z: 0.46 });                                  // strike (overshoots)
-    for (const tt of tg.taps || []) { kF.push({ t: tt, ang, ext: ext - 0.03, tap: 8, f: 9, z: 0.55 }); kF.push({ t: tt + 0.1, ang, ext, tap: 0, f: 8, z: 0.6 }); }
+    for (const tt of (tg.taps || [])) { kF.push({ t: tt, ang, ext: ext - 0.03, tap: 8, f: 9, z: 0.55 }); kF.push({ t: tt + 0.1, ang, ext, tap: 0, f: 8, z: 0.6 }); }
+    for (const tt of tg.press || []) { kF.push({ t: tt - 0.12, ang, ext: ext - 0.05, tap: -4, f: 6, z: 0.8 }); kF.push({ t: tt, ang, ext: Math.min(1.0, ext + 0.02), tap: 16, f: 12, z: 0.7 }); kF.push({ t: tt + 0.16, ang, ext, tap: 2, f: 6, z: 0.7 }); }
     const hx = Math.cos(ang) * 4.5, hy = Math.sin(ang) * 3;
     bk.push({ t: t0 - 0.34, v: [-1.5, 2.8, -1.2, 1.2], f: 3.5, z: 0.85 }); bk.push({ t: t0 - 0.06, v: [Math.max(0, Math.cos(ang)) * 5.5 + 1, -0.5, hx, hy - 0.6], f: 3, z: 0.5 });
     lk.push({ t: t0 - 0.16, v: [Math.cos(ang) * 1.6, Math.sin(ang) * 1.6], f: 4, z: 0.7 }); prevAng = ang;
