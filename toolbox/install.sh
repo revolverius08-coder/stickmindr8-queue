@@ -10,5 +10,5 @@ done
 mkdir -p sfxgen && (cd sfxgen && npm init -y >/dev/null && npm i jsfxr --no-audit --no-fund)
 echo "Chrome pentru stickman-kino: export PUPPETEER_EXECUTABLE_PATH=\$(node -e \"console.log(require('playwright').chromium.executablePath())\")"
 pip install --break-system-packages faster-whisper 2>&1 | tail -1
-# modelele TTS (Kokoro kokoro-en-v0_19 + sherpa-onnx v1.13.8 linux-x64-shared) se descarcă din releases k2-fsa/sherpa-onnx în /home/claude/tts/
+bash "$(dirname "$0")/studio-kit/get_voice.sh" /home/claude/tts   # voce Kokoro + sherpa-onnx (~50 s, gratuit)
 # tesseract: apt/preinstalat (necesar pentru qc_video.py)

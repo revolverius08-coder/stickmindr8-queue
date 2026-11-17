@@ -64,7 +64,7 @@ Salvat aici ca să nu se piardă la reset:
 - GitHub: `revolverius08-coder/stickmindr8-queue` (posts/…, series/…, toolbox/…). `git push` merge direct.
 
 ### 1.5 Voce, transcriere, audio
-- **TTS:** Kokoro-82M `kokoro-en-v0_19`, voce sid 6, prin `sherpa-onnx-offline-tts` (în `/home/claude/tts/`). La container nou: re-descarc binarul sherpa-onnx și modelul `kokoro-en-v0_19` din releases `k2-fsa/sherpa-onnx` (GitHub). Gratuit, fără cont.
+- **TTS:** Kokoro-82M `kokoro-en-v0_19`, voce sid 6, prin `sherpa-onnx-offline-tts` (în `/home/claude/tts/`). La container nou: `bash toolbox/studio-kit/get_voice.sh` (descarcă din releases `k2-fsa/sherpa-onnx`, ~330 MB, ~50 s, testat). Gratuit, fără cont.
 - **Whisper:** `faster-whisper` instalat (`pip install --break-system-packages faster-whisper`; modelul `base.en` se descarcă automat din Hugging Face; PyAV dă eroare la deschiderea fișierelor, deci decodăm audio cu ffmpeg în numpy). Folosit în `align_words.py`, `tools/transcribe.py`, transcrierea referințelor.
 - **Tesseract** instalat (OCR pentru QC). **ffmpeg 6.1**, **Node 22**, **Python 3.13**, numpy/scipy/opencv.
 - **Muzică:** generată local (11 stări: mystery, tension, action, wonder, hopeful, sad, triumph, playful, calm, dark, epic). Folosim mai ales `playful` (intensitate 0.45–0.75). Mixaj: voce curată, muzică −9 dB sub voce, ambianță −5, master −14 LUFS.
@@ -143,7 +143,8 @@ Pachetele uisfx: arcade, rubber, glass, mechanical, minimal, soft, organic, drea
 
 ## 5. Animație: biblioteca de efecte (existente vs. propuse)
 **Existente (le folosim):** pop cu overshoot (`outBack`), shake la impact, glow/burst, undă audio, grafice (bare, chat spike), ștampile, ico, cuvânt mare cu rotație, whip/flash/dip/fade/zoom, parallax `layer`, `blurLayer` (prim-plan estompat), praf `FX.dust`, rings, lensStreak, godRays, 3D (`three-kit`, rar, doar mediu).
-**Propuse din uneltele noi (de aprobat înainte de folosire):**
+**Implementate și demonstrate (cod în `toolbox/studio-kit/scenes/shots/fx_demo.g.js`, demo 15 s `fx_demo.mp4`; de aprobat la folosirea într-un clip):** trasat→colorat (contur dezvelit stânga→dreapta, apoi umplere cu culoare), linie care „fierbe” (re-desenare cu tremur la 12 fps), schemă de mână (cutii schițate în 2 treceri + săgeți care se trasează + punct care călătorește), mers + pop + burst cu rig-ul nostru. Fiecare e o funcție mică de copiat în `g.js`.
+**Încă propuse din uneltele noi (de aprobat înainte de folosire):**
 - *Trasat apoi colorat* (handdraw-story-video): obiectul-cheie se desenează în linie, apoi se umple de culoare. O singură dată, la hook.
 - *Linie care „fierbe"* (animate): wobble pe contururi la 2 s, pentru un clip creativ pe lună.
 - *Aspect desenat de mână* (Archscribe/rough.js): scheme de flux.
@@ -210,7 +211,7 @@ Spun rezultatul QC într-o linie la livrare.
 ---
 
 ## 12. Capcane cunoscute
-- Containerul se poate reseta: ce nu e în repo se pierde (proiectele clipN, modelele TTS, `qc_video.py`). Folosesc `toolbox/install.sh` și `toolbox/studio-kit/` (modelele TTS se re-descarcă manual, vezi §1.5).
+- Containerul se poate reseta: ce nu e în repo se pierde (proiectele clipN, modelele TTS, `qc_video.py`). Folosesc `toolbox/install.sh` și `toolbox/studio-kit/` (vocea se reinstalează cu `get_voice.sh`, §1.5).
 - `wd.sh` pare blocat dacă randez cadre de probă în paralel (CPU): așteaptă, termină.
 - Ora de azi deja trecută → slotul se mută pe ziua următoare; spun asta clar utilizatorului.
 - Claim-uri neverificabile despre unelte: le scot; spun doar ce e demonstrat (ex. „free software, not free to run").
