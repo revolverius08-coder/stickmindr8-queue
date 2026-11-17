@@ -1,0 +1,21 @@
+{
+ "series": "AI tools",
+ "slug": "clip7_supoclip_vs_opusclip",
+ "title": "SupoClip vs OpusClip",
+ "caption": "OpusClip Pro costs $29 a month. SupoClip is an open source alternative. 🎬\n\nPaste a YouTube, Twitch or Kick link. It finds the best moments, crops them vertical on the speaker's face, and adds captions. One catch: you bring your own API keys, so it's free software, but not free to run. Only clip streamers who allow it, and credit them. Not affiliated with either tool.\n\nPay for clips, or host your own? Comment OPEN and tag a friend who clips. Follow @StickMindR8!\n\n#opensource #aitools #contentcreator #github #reelsinstagram",
+ "first_comment": "Pay for clips, or host your own? Comment OPEN 👇 Check each tool's license and your platform's rules first.",
+ "status": "ready",
+ "other_platforms": {
+  "youtube_shorts": {
+   "title": "SupoClip vs OpusClip: Open Source Clipper",
+   "description": "OpusClip Pro is $29 a month. SupoClip is open source: paste a YouTube, Twitch or Kick link, find the best moments, crop vertical, add captions. You bring your own API keys. Not affiliated with either tool.\n\n#opensource #shorts #aitools #contentcreator #github",
+   "tags": "supoclip, opusclip, open source, ai clipper, twitch clips, youtube shorts, content creator"
+  },
+  "tiktok": {
+   "title": "OpusClip is $29/month. This is open source.",
+   "description": "SupoClip finds the best moments, crops vertical and adds captions. You bring your own API keys.",
+   "hashtags": "#opensource #aitools #contentcreator #github #fyp"
+  }
+ },
+ "publish_at": "2026-11-18T06:00:00+02:00"
+}
