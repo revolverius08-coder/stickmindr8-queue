@@ -1,4 +1,4 @@
-# StickMindR8 toolbox: 9 unelte gratuite (MIT / CC0 / Unlicense)
+# StickMindR8 toolbox: 10 unelte gratuite (MIT / CC0 / Unlicense / GPL-3 pentru bpy)
 Instalare într-o sesiune nouă: `bash toolbox/install.sh` (clone + npm). Sunetele uisfx sunt deja aici: `toolbox/sfx/uisfx-sounds/<pachet>/<cue>.mp3` (CC0, 936 fișiere).
 Regula: Stick rămâne 2D-ul nostru. Luăm din ele idei, sunete, efecte și verificări, nu stilul altcuiva. Nimic nou în clip fără aprobarea lui.
 
@@ -33,6 +33,12 @@ rough.js + preseturi `draw`, `flow`, `trace`. Folosire: scheme de flux (ex. „c
 
 ## 9. jsfxr + ZzFX (Unlicense / MIT): SFX din cod
 `sfxgen/`: `sfxr.generate('pickupCoin'|'powerUp'|'hitHurt'|'laserShoot'|'explosion'|'blipSelect'|'jump')` → WAV. Testat. Folosire: sunete lipsă (coin, laser, glitch) și variații, ca să nu sune la fel în toate clipurile.
+
+## 10. bpy = Blender ca pachet Python (GPL-3; imaginile randate sunt ale noastre): obiecte 3D realiste (telefon, mașină)
+Verificat 2026-11-18 în cloud, fără PC-ul lui: `pip install bpy` (roata de 427 MB, 1 GB instalat; folosim `--target /tmp/b3d/pkg` ca să nu atingă restul). Merge pe CPU, fără GPU. Teste pe 2 nuclee: Cycles 540x960, 16 mostre = 10 s/cadru; 1080x1920, 48 mostre = 73 s/cadru; EEVEE merge doar prin GL software (85 s/cadru, fără câștig).
+Concluzie: NU pentru animație cadru cu cadru (5 s la 24 fps = 120 cadre = 20 min la 540p, peste 2 ore la 1080p; depășește bugetul de 20 min). DA pentru un singur cadru fix per obiect (telefon, mașină, card), randat o dată cu fundal transparent (PNG, ~1–2 min), apoi animat în studio 2D: push-in, parallax, rotire cu mai multe poze, reflexii false. Pentru obiecte care se rotesc: 8–12 unghiuri randate o singură dată.
+Exemplu testat: `studio-kit/tools/bpy_still_example.py <mostre>` (telefon cu ecran din PNG). Regula rămâne: Stick 2D, 3D doar mediu/obiecte, listat și aprobat înainte.
+**FOLOSIM bpy DOAR când cere el special** (randarea durează foarte mult); implicit rămânem pe studioul 2D + three.js.
 
 ## Cum le combinăm pentru clipuri premium (propuneri, de aprobat)
 1. Pop-uri cu obiecte reale + sunet uisfx pe cuvânt, cu easing din motion-design-skill (overshoot mic, stagger 60–80 ms).
