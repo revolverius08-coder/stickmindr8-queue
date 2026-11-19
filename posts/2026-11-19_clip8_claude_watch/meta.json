@@ -1,0 +1,9 @@
+{
+ "series": "AI tools",
+ "slug": "clip8_claude_watch",
+ "title": "Claude can now watch videos",
+ "caption": "Claude can now watch videos. Really. 👀\n\nThis free GitHub plugin is called Watch (claude-video): paste a YouTube link or drop a file, and it pulls frames and a transcript so Claude sees what happens, second by second. Summaries, clips, notes, in seconds. Free and open-source (MIT). Not affiliated with the project or Claude.\n\nComment WATCH and I'll send you the link. Tag a friend who lives on YouTube. Follow @StickMindR8!\n\n#opensource #github #aitools #claude #reelsinstagram",
+ "first_comment": "Want the link? 👇 Comment WATCH and follow @StickMindR8, and I'll send it to your DMs.",
+ "status": "ready",
+ "publish_at": "2026-11-19T10:45:00+02:00"
+}
