@@ -1,4 +1,4 @@
-# StickMindR8 toolbox: 10 unelte gratuite (MIT / CC0 / Unlicense / GPL-3 pentru bpy)
+# StickMindR8 toolbox: 11 unelte gratuite (MIT / CC0 / Unlicense / GPL-3 pentru bpy)
 Instalare într-o sesiune nouă: `bash toolbox/install.sh` (clone + npm). Sunetele uisfx sunt deja aici: `toolbox/sfx/uisfx-sounds/<pachet>/<cue>.mp3` (CC0, 936 fișiere).
 Regula: Stick rămâne 2D-ul nostru. Luăm din ele idei, sunete, efecte și verificări, nu stilul altcuiva. Nimic nou în clip fără aprobarea lui.
 
@@ -39,6 +39,11 @@ Verificat 2026-11-18 în cloud, fără PC-ul lui: `pip install bpy` (roata de 42
 Concluzie: NU pentru animație cadru cu cadru (5 s la 24 fps = 120 cadre = 20 min la 540p, peste 2 ore la 1080p; depășește bugetul de 20 min). DA pentru un singur cadru fix per obiect (telefon, mașină, card), randat o dată cu fundal transparent (PNG, ~1–2 min), apoi animat în studio 2D: push-in, parallax, rotire cu mai multe poze, reflexii false. Pentru obiecte care se rotesc: 8–12 unghiuri randate o singură dată.
 Exemplu testat: `studio-kit/tools/bpy_still_example.py <mostre>` (telefon cu ecran din PNG). Regula rămâne: Stick 2D, 3D doar mediu/obiecte, listat și aprobat înainte.
 **FOLOSIM bpy DOAR când cere el special** (randarea durează foarte mult); implicit rămânem pe studioul 2D + three.js.
+
+## 11. zach-d-films-kit (MIT; din claude-animation-skills): scurte 3D în stil Zack D. Films
+Testat 2026-11-19 în cloud, fără GPU (three.js + Playwright, GL software). Rezultat: scurtul „30 days of only energy drinks” (31,6 s, om 3D în bucătărie 3D, pop-uri cu cutii, cifre mari, carduri finale, SFX din cod). Randare ~3 s/cadru, 42 min pentru 31,6 s la 24 fps (peste limita de 20 min, cu acordul lui).
+Verdict (al lui): nu a ieșit cum a vrut; nu înlocuiește Stick 2D, dar păstrăm motorul ca bibliotecă de modele/obiecte/medii 3D pentru mai târziu. Codul, adaptările și exemplul sunt în `toolbox/zach-d-films-kit/` (vezi README acolo).
+**Folosim doar când cere el** (personaj 3D = risc de aspect „păpușă”).
 
 ## Cum le combinăm pentru clipuri premium (propuneri, de aprobat)
 1. Pop-uri cu obiecte reale + sunet uisfx pe cuvânt, cu easing din motion-design-skill (overshoot mic, stagger 60–80 ms).
