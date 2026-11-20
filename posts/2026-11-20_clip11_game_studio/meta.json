@@ -1,0 +1,25 @@
+{
+ "series": "AI tools",
+ "slug": "clip11_game_studio",
+ "title": "One sentence. One game.",
+ "caption": "One sentence. One game. 🎮\n\nClaude-Code-Game-Studios is a free open-source repo that turns Claude Code into a whole game studio: 49 agents, from directors to designers to QA. You describe the idea, they plan, build and test it.\nMIT license. Not affiliated with this project or with Claude.\n\nComment GAME and I'll send you the link. Tag a friend who wants to make a game. Follow @StickMindR8!\n\n#claudecode #gamedev #aitools #opensource #reelsinstagram",
+ "first_comment": "Want the link? Comment GAME 👇 What game would you make with 49 agents?",
+ "status": "ready",
+ "other_platforms": {
+  "youtube_shorts": {
+   "title": "One sentence. One game. (free Claude Code studio)",
+   "description": "Claude-Code-Game-Studios: a free open-source repo that turns Claude Code into a game studio with 49 agents (directors, designers, QA). Describe the idea, they plan, build and test. Not affiliated with this project or with Claude.\n\n#claudecode #gamedev #aitools #shorts #opensource",
+   "tags": "claude code, game dev, ai agents, game studio, open source, github, indie game, ai tools"
+  },
+  "tiktok": {
+   "title": "One sentence. One game.",
+   "description": "A free repo that turns Claude Code into a 49-agent game studio. Comment GAME for the link.",
+   "hashtags": "#aitools #claudecode #opensource #tech #fyp"
+  },
+  "facebook": {
+   "title": "One sentence. One game.",
+   "description": "One sentence. One game. 🎮\n\nClaude-Code-Game-Studios is a free open-source repo that turns Claude Code into a whole game studio: 49 agents, from directors to designers to QA. You describe the idea, they plan, build and test it.\nMIT license. Not affiliated with this project or with Claude.\n\nComment GAME for the link. Follow StickMindR8!\n\n#aitools #claudecode #opensource #shorts #tech"
+  }
+ },
+ "publish_at": "2026-11-20T20:00:00+02:00"
+}

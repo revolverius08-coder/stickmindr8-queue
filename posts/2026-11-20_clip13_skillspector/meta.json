@@ -1,0 +1,25 @@
+{
+ "series": "AI tools",
+ "slug": "clip13_skillspector",
+ "title": "Scan Claude skills before you install",
+ "caption": "Stop. Don't install that Claude skill yet. 🛑\n\nA skill can hide malicious code, prompt injection, even data theft. SkillSpector, a free open-source tool from NVIDIA, scans it before you install it and flags the risks. An LLM key is optional for deeper checks.\nApache-2.0 license. Not affiliated with this project or with Claude.\n\nComment SCAN and I'll send you the link. Tag a friend who installs everything. Follow @StickMindR8!\n\n#claudecode #aisecurity #aitools #opensource #reelsinstagram",
+ "first_comment": "Want the link? Comment SCAN 👇 Do you check skills before installing them? A scan is a first filter, not a guarantee.",
+ "status": "ready",
+ "other_platforms": {
+  "youtube_shorts": {
+   "title": "Scan Claude skills before you install them (SkillSpector)",
+   "description": "SkillSpector is a free open-source tool from NVIDIA that scans AI agent skills for malicious code, prompt injection and data theft before you install them. An LLM key is optional. A scan is a first filter, not a guarantee. Not affiliated with this project or with Claude.\n\n#claudecode #aisecurity #aitools #shorts #opensource",
+   "tags": "skillspector, nvidia, claude skills, ai security, prompt injection, open source, github, claude code"
+  },
+  "tiktok": {
+   "title": "Scan Claude skills before you install",
+   "description": "Scan Claude skills for malicious code before you install them. Comment SCAN for the link.",
+   "hashtags": "#aitools #claudecode #opensource #tech #fyp"
+  },
+  "facebook": {
+   "title": "Scan Claude skills before you install",
+   "description": "Stop. Don't install that Claude skill yet. 🛑\n\nA skill can hide malicious code, prompt injection, even data theft. SkillSpector, a free open-source tool from NVIDIA, scans it before you install it and flags the risks. An LLM key is optional for deeper checks.\nApache-2.0 license. Not affiliated with this project or with Claude.\n\nComment SCAN for the link. Follow StickMindR8!\n\n#aitools #claudecode #opensource #shorts #tech"
+  }
+ },
+ "publish_at": "2026-11-21T00:00:00+02:00"
+}
