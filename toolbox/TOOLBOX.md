@@ -53,3 +53,6 @@ Verdict (al lui): nu a ieșit cum a vrut; nu înlocuiește Stick 2D, dar păstr�
 5. Linie „boil” pe contururi la un clip pe lună, pentru variație.
 6. QC mărit: analizor pe referință, contact sheet cu zona sigură, scor „prezentare PowerPoint animată” (idee din OpenMontage), 4 cadre după randare.
 7. Seria A/B „You Decide”: continuitate în fișier, ca la Santa.
+
+## outro_kit (mandatory ending)
+`toolbox/outro_kit/` holds the StickMindR8 phone outro (apply_outro.py + outro_flip_alpha.mov, outro_pov.mp4, outro_audio.wav). Used on every video; see MASTER_PROMPT.md.

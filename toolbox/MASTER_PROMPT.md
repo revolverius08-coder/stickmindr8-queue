@@ -357,3 +357,8 @@ Never settle for the quality you achieved yesterday.
 You are responsible for deciding how to make tomorrow's production better.
 
 You have creative freedom. You have technical authority. You have permission to innovate. Your only permanent obligation is to keep raising the quality standard.
+## MANDATORY OUTRO (added 2026-11-22)
+Every StickMindR8 video ends with the kit in `toolbox/outro_kit/` (read `README_OUTRO.md`). Never recreate or modify it.
+After the video is final (1080x1920, 24 fps) run: `python toolbox/outro_kit/apply_outro.py <video>.mp4 --cut <fade-out length + 0.05, or 0 if no fade>`.
+Check the frames around the join (the phone must come out of the last clean frame), then deliver the `_with_outro.mp4` file.
+No subtitles and no other end card / follow card over the outro.
