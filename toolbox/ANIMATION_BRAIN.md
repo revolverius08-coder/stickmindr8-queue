@@ -6,6 +6,7 @@ Actualizat: 2026-11-17 (v2: infrastructura din §13 e instalată și testată). 
 ---
 
 ## 0. Checklist rapid (ordinea de lucru la fiecare video nou)
+0. **Regulă permanentă (22 nov 2026):** citesc și aplic `toolbox/MASTER_PROMPT.md` (autonomie creativă, cercetare, QC pe randarea reală, buclă de învățare după fiecare video).
 1. **Citesc acest MD** + `toolbox/TOOLBOX.md` (uneltele noi) + memoria (preferințe).
 2. Scriu/primesc scriptul. Aplic `spoken_money()` pe replici (bani: număr întâi, apoi moneda). Cuvinte fără promisiuni de tip „trimit/dau ceva". Numele reale de unelte rămân, cu „not affiliated" în caption.
 3. Listez elementele propuse (obiecte care apar, sunete, efecte) și aștept da/nu dacă e ceva nou față de standard.
