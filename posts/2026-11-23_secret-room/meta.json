@@ -2,7 +2,7 @@
  "title": "The Secret Room 🪞",
  "slug": "secret-room",
  "series": "Build Series",
- "status": "ready",
+ "status": "posted",
  "hook_type": "curiosity / problem-solution chain",
  "theme": "secret room build, one problem at a time",
  "idea_source": "reference reel remade as an original Stick story",
@@ -42,5 +42,11 @@
   "title": "Behind This Mirror Is a Secret Room 🪞",
   "description": "16 problems. 16 fixes. And from the bedroom it still just looks like a mirror 🪞 #secretroom #stickman #diy #animation #fyp",
   "pinned_comment": "Which upgrade would you build first? 🪞👇"
+ },
+ "posted": {
+  "youtube": "https://youtube.com/shorts/WsEnd4tz5_A",
+  "instagram": "https://www.instagram.com/reel/DgF6JdmAZA8/",
+  "facebook_video_id": "1139565445482130",
+  "at": "2026-11-23T17:25:00Z"
  }
 }
